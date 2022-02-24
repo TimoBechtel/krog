@@ -82,7 +82,7 @@ export function createHooks<T extends Hooks>() {
  * deeply clones arrays and objects
  * @returns
  */
-export function deepClone<T>(source: T): T {
+function deepClone<T>(source: T): T {
 	if (!source || typeof source !== 'object') return source;
 	return JSON.parse(JSON.stringify(source));
 }
