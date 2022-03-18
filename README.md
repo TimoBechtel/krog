@@ -88,14 +88,19 @@ Note: When multiple functions are registered to the same hook, they are called i
 Examples:
 
 ```js
+// register a single hook
+hooks.register('before:write', myHookFunction);
+```
+
+```js
 // register all hooks from a list of plugins
 plugins.forEach((plugin) => {
-	Object.entries(plugin.hooks).forEach(([hookName, hook]) => {
-		hooks.register(hookName, hook);
-	});
+	hooks.registerMany(plugin.hooks);
 });
+```
 
-// manually register
+```js
+// manually register each hook
 plugins.forEach((plugin) => {
 	hooks.register('before:write', plugin.beforeWrite);
 });

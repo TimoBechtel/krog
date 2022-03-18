@@ -97,10 +97,22 @@ export function createHooks<T extends Hooks>() {
 		hooks[name]?.push(hook);
 	}
 
+	/**
+	 * convenience function to register multiple hooks at once
+	 *
+	 * @param hooks an object with hooks where the key is the hook name and the value is the hook
+	 */
+	function registerMany(hooks: Partial<T>) {
+		Object.entries(hooks).forEach(([hookName, hook]) => {
+			register(hookName, hook);
+		});
+	}
+
 	return {
 		call,
 		wrap,
 		register,
+		registerMany,
 	};
 }
 
