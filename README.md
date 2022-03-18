@@ -103,7 +103,37 @@ plugins.forEach((plugin) => {
 
 #### 3. Call hooks
 
-Anywhere in your code, call the hook, using `hooks.call`.
+##### a) Wrap functions
+
+The easiest way is to wrap existing functions using `hooks.wrap`.
+
+This will then pass all arguments to the hook before running the initial function.
+
+```js
+// wrap your function (note the parenthesis at the end)
+const wrappedPrinter = hooks.wrap('before:write', printer)();
+
+// call the wrapped function like normal
+wrappedPrinter('Hello World');
+```
+
+You can also pass a context to your wrapped function:  
+(that is the reason for the parenthesis at the end)
+
+```js
+// create a function factory
+const createInstance = hooks.wrap('before:write', myFunction);
+
+// create an instance of the function with a context
+const myWrappedFunction = createInstance(myContext);
+
+// call the wrapped function like normal
+myWrappedFunction(myArguments);
+```
+
+##### b) Call hooks directly
+
+You can also call a hook anywhere in your code using `hooks.call`.
 
 You can pass arguments to the hook, and get the result back.  
 You can also pass a context object, which will be available in the hook function.
@@ -136,6 +166,14 @@ const upperCasePlugin = {
 	},
 };
 ```
+
+### FAQs
+
+#### Differences between arguments and context
+
+- The **context** is an object that is passed to all hooks. It can be used to pass data or functions that can be used in hooks but should not be modified by a hook.
+
+- **arguments** on the other hand, are passed to the hook and can be modified by returning a modified version.
 
 ## Used by
 

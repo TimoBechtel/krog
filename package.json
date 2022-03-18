@@ -19,7 +19,7 @@
 	"scripts": {
 		"prepack": "npm run build",
 		"build": "parcel build src/index.ts",
-		"test": "echo no tests exist; exit 0"
+		"test": "jest"
 	},
 	"files": [
 		"dist",

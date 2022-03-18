@@ -67,6 +67,31 @@ export function createHooks<T extends Hooks>() {
 		return result;
 	}
 
+	/**
+	 * wraps a function with hooks
+	 *
+	 * it returns a function that allows you to pass a context and creates a new function that wraps the original function
+	 *
+	 */
+	function wrap<
+		Key extends K,
+		Fn extends (...args: ExtractArguments<T[Key]>) => any
+	>(name: Key, fn: Fn, { asRef }: { asRef?: boolean } = {}) {
+		/**
+		 * create a wrapped function with the given context
+		 */
+		return (context: ExtractContext<T[Key]>) =>
+			async function (...args: Parameters<Fn>): Promise<ReturnType<Fn>> {
+				const callParameters = {
+					// we can be sure that the passed arguments are of the correct type
+					args: args as ExtractArguments<T[Key]>,
+					context,
+				};
+				const result = await call(name, callParameters, { asRef });
+				return fn(...result);
+			};
+	}
+
 	function register(name: K, hook: T[K]) {
 		if (!hooks[name]) hooks[name] = [];
 		hooks[name]?.push(hook);
@@ -74,6 +99,7 @@ export function createHooks<T extends Hooks>() {
 
 	return {
 		call,
+		wrap,
 		register,
 	};
 }
