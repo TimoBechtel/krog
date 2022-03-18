@@ -1,3 +1,11 @@
+# [1.1.0](https://github.com/TimoBechtel/krog/compare/v1.0.1...v1.1.0) (2022-03-18)
+
+
+### Features
+
+* add convenience function to register multiple hooks at once ([a50746b](https://github.com/TimoBechtel/krog/commit/a50746b0d2a3e653b877be26771a09815a31687a))
+* **wrap:** allow wrapping functions ([6e231d5](https://github.com/TimoBechtel/krog/commit/6e231d5ad38c4a54da91e25c7f230a836a9b71e4))
+
 ## [1.0.1](https://github.com/TimoBechtel/krog/compare/v1.0.0...v1.0.1) (2022-02-24)
 
 

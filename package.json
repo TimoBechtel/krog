@@ -1,6 +1,6 @@
 {
 	"name": "krog",
-	"version": "1.0.1",
+	"version": "1.1.0",
 	"description": "Add a hooks-based plugin system to your library.",
 	"repository": "git@github.com:TimoBechtel/krog.git",
 	"author": "Timo Bechtel <hi@timobechtel.com>",
