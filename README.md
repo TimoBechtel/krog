@@ -45,7 +45,7 @@ const { data } = await hooks.call('before:write', {
 ## Install
 
 ```sh
-yarn add krog
+pnpm add krog
 ```
 
 or
@@ -192,7 +192,7 @@ const upperCasePlugin = {
 ### Run tests
 
 ```sh
-yarn run test
+pnpm run test
 ```
 
 ### Commit messages
