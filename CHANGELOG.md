@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/TimoBechtel/krog/compare/v1.1.0...v1.2.0) (2022-11-15)
+
+
+### Features
+
+* move to an esm first approach ([c3b55a2](https://github.com/TimoBechtel/krog/commit/c3b55a2ae1e7d84e09ae89cb0a2e87db54dbf37d))
+
 # [1.1.0](https://github.com/TimoBechtel/krog/compare/v1.0.1...v1.1.0) (2022-03-18)
 
 
