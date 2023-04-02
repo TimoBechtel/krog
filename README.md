@@ -14,13 +14,13 @@
 
 ## Table of Contents
 
-- [About](#About)
+- [About](#about)
   - [Features](#Features)
-- [Installation](#Install)
-- [Usage](#Usage)
+- [Installation](#install)
+- [Usage](#usage)
   - [As a library author](#As-a-library-author)
   - [As a plugin author](#As-a-plugin-author)
-- [Used by](#Used-by)
+- [Used by](#used-by)
 - [Development / Contributing](#Development-Contributing)
 
 ## About
@@ -148,6 +148,35 @@ const { data } = await hooks.call('before:write', {
 	args: { data: dataBeforeHook },
 	context: myContext,
 });
+```
+
+#### 4. Unregister hooks
+
+You can unregister hooks by:
+
+##### a) Calling the returned unregister function
+
+```js
+const unregister = hooks.register('before:write', myHookFunction);
+unregister();
+
+// for registerMany
+const unregisterMany = hooks.registerMany({
+	'before:write': myHookFunction,
+});
+unregisterMany();
+```
+
+##### b) Calling `hooks.unregister`
+
+```js
+hooks.register('before:write', myHookFunction);
+
+// unregister a specific callback for the 'before:write' hook
+hooks.unregister('before:write', myHookFunction);
+
+// unregister all callbacks for the 'before:write' hook
+hooks.unregister('before:write');
 ```
 
 ### As plugin author

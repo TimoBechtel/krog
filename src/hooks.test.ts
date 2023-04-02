@@ -115,3 +115,45 @@ test('allow asynchronous functions as middleware', (done) => {
 	});
 	hooks.call('test:hook');
 });
+
+it('should unregister a specific hook', async () => {
+	const hooks = createHooks<{
+		'test:hook': Hook<number, void>;
+	}>();
+
+	hooks.register('test:hook', (value) => {
+		return value * 2;
+	});
+	const unregisterTestHook2 = hooks.register('test:hook', (value) => {
+		return value * 3;
+	});
+
+	let result = await hooks.call('test:hook', { args: 1 });
+	expect(result).toEqual(6);
+
+	// Unregister testHook2 and call the hooks again
+	unregisterTestHook2();
+	result = await hooks.call('test:hook', { args: 1 });
+	expect(result).toEqual(2);
+});
+
+it('should unregister all hooks for a given name', async () => {
+	const hooks = createHooks<{
+		'test:hook': Hook<number, void>;
+	}>();
+
+	hooks.register('test:hook', (value) => {
+		return value * 2;
+	});
+	hooks.register('test:hook', (value) => {
+		return value * 3;
+	});
+
+	let result = await hooks.call('test:hook', { args: 1 });
+	expect(result).toEqual(6);
+
+	// Unregister all hooks for 'test:hook' and call the hooks again
+	hooks.unregister('test:hook');
+	result = await hooks.call('test:hook', { args: 1 });
+	expect(result).toEqual(1);
+});

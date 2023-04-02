@@ -95,6 +95,17 @@ export function createHooks<T extends Hooks>() {
 	function register(name: K, hook: T[K]) {
 		if (!hooks[name]) hooks[name] = [];
 		hooks[name]?.push(hook);
+
+		return () => unregister(name, hook);
+	}
+
+	function unregister(name: K, hook?: T[K]) {
+		if (!hooks[name]) return;
+		if (hook) {
+			hooks[name] = hooks[name]?.filter((h) => h !== hook);
+		} else {
+			hooks[name] = undefined;
+		}
 	}
 
 	/**
@@ -106,12 +117,19 @@ export function createHooks<T extends Hooks>() {
 		Object.entries(hooks).forEach(([hookName, hook]) => {
 			register(hookName, hook);
 		});
+
+		return () => {
+			Object.entries(hooks).forEach(([hookName, hook]) => {
+				unregister(hookName, hook);
+			});
+		};
 	}
 
 	return {
 		call,
 		wrap,
 		register,
+		unregister,
 		registerMany,
 	};
 }
