@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/TimoBechtel/krog/compare/v1.2.0...v1.3.0) (2023-04-02)
+
+
+### Features
+
+* allow unregistering hooks ([56c4292](https://github.com/TimoBechtel/krog/commit/56c42925d65227eabbbb240d4a9d9dc96496e389))
+
 # [1.2.0](https://github.com/TimoBechtel/krog/compare/v1.1.0...v1.2.0) (2022-11-15)
 
 
