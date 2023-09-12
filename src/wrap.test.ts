@@ -1,3 +1,4 @@
+import { expect, test } from 'bun:test';
 import { createHooks, Hook } from '.';
 
 test('can wrap a function', async () => {

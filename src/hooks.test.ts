@@ -1,4 +1,5 @@
-import { createHooks, Hook } from '.';
+import { expect, it, test } from 'bun:test';
+import { Hook, createHooks } from '.';
 
 test('allows registering hooks', (done) => {
 	const hooks = createHooks<{
