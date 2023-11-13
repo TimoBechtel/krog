@@ -38,7 +38,7 @@ Example:
 
 ```typescript
 const { data } = await hooks.call('before:write', {
-	args: { data: 'Hello World' },
+  args: { data: 'Hello World' },
 });
 ```
 
@@ -72,8 +72,8 @@ With typescript, you can add types:
 import { createHooks, Hook } from 'krog';
 
 export type AvailableHooks = {
-	// first type is the arguments type, second is the context type; both are optional
-	'before:write': Hook<{ data: string }, { config: any }>;
+  // first type is the arguments type, second is the context type; both are optional
+  'before:write': Hook<{ data: string }, { config: any }>;
 };
 
 const hooks = createHooks<AvailableHooks>();
@@ -95,14 +95,14 @@ hooks.register('before:write', myHookFunction);
 ```js
 // register all hooks from a list of plugins
 plugins.forEach((plugin) => {
-	hooks.registerMany(plugin.hooks);
+  hooks.registerMany(plugin.hooks);
 });
 ```
 
 ```js
 // manually register each hook
 plugins.forEach((plugin) => {
-	hooks.register('before:write', plugin.beforeWrite);
+  hooks.register('before:write', plugin.beforeWrite);
 });
 ```
 
@@ -145,8 +145,8 @@ You can also pass a context object, which will be available in the hook function
 
 ```js
 const { data } = await hooks.call('before:write', {
-	args: { data: dataBeforeHook },
-	context: myContext,
+  args: { data: dataBeforeHook },
+  context: myContext,
 });
 ```
 
@@ -162,7 +162,7 @@ unregister();
 
 // for registerMany
 const unregisterMany = hooks.registerMany({
-	'before:write': myHookFunction,
+  'before:write': myHookFunction,
 });
 unregisterMany();
 ```
@@ -187,17 +187,17 @@ The syntax depends on how the library handles plugins. If the library allows you
 
 ```js
 const upperCasePlugin = {
-	hooks: {
-		'before:write': (args, context) => {
-			if (context.config.uppercase) {
-				// if you want to modify the data, you can return a new args object (context cannot be modified)
-				return {
-					data: args.data.toUpperCase(),
-				};
-			}
-			// if you don't return anything, the data will be unchanged
-		},
-	},
+  hooks: {
+    'before:write': (args, context) => {
+      if (context.config.uppercase) {
+        // if you want to modify the data, you can return a new args object (context cannot be modified)
+        return {
+          data: args.data.toUpperCase(),
+        };
+      }
+      // if you don't return anything, the data will be unchanged
+    },
+  },
 };
 ```
 

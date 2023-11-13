@@ -1,18 +1,18 @@
 {
-	"compilerOptions": {
-		"types": ["bun-types"],
-		"lib": ["esnext"],
-		"module": "esnext",
-		"target": "esnext",
-		"moduleResolution": "bundler",
-		"noEmit": true,
-		"allowImportingTsExtensions": true,
-		"moduleDetection": "force",
-		"outDir": "dist",
-		"rootDir": "src",
-		"strictNullChecks": true,
-		"noImplicitAny": true
-	},
-	"include": ["src"],
-	"exclude": ["node_modules"]
+  "compilerOptions": {
+    "types": ["bun-types"],
+    "lib": ["esnext"],
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "moduleDetection": "force",
+    "outDir": "dist",
+    "rootDir": "src",
+    "strictNullChecks": true,
+    "noImplicitAny": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }
