@@ -37,8 +37,7 @@
 	"devDependencies": {
 		"@parcel/packager-ts": "2.8.3",
 		"@parcel/transformer-typescript-types": "2.8.3",
-		"@semantic-release/changelog": "^6.0.3",
-		"@semantic-release/git": "^10.0.1",
+		"@timobechtel/style": "^1.4.0",
 		"@types/node": "^18.15.11",
 		"bun-types": "^1.0.1",
 		"parcel": "^2.8.3",
