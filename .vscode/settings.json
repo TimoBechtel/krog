@@ -1,0 +1,6 @@
+{
+  "editor.codeActionsOnSave": {
+    // disabled in favor of eslint import/order rule
+    "source.organizeImports": false
+  }
+}

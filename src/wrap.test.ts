@@ -1,11 +1,12 @@
 import { expect, test } from 'bun:test';
-import { createHooks, Hook } from '.';
+import { createHooks, type Hook } from '.';
 
 test('can wrap a function', async () => {
   const hooks = createHooks<{
     'before:concat': Hook<string[], { toUpper: (v: string) => string }>;
   }>();
 
+  // eslint-disable-next-line unicorn/consistent-function-scoping
   function concatStrings(...strings: string[]): string {
     return strings.join(' ');
   }

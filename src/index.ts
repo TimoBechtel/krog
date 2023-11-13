@@ -1,24 +1,28 @@
+// Disabling this is not optimal, but it is ok for now until we have a better solution
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+
+// hook callbacks may return arguments or nothing (void), so we allow void here
+/* eslint-disable @typescript-eslint/no-invalid-void-type */
+
 export type Hook<Arguments = void, Context = void> = (
   args: Arguments,
   cxt: Context,
 ) => void | Arguments | Promise<void | Arguments>;
 
-type Hooks = {
-  [key: string]: Hook<any, any>;
-};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnyHook = Hook<any, any>;
 
-type ExtractArguments<H extends Hook<any, any>> = H extends Hook<infer Arg, any>
-  ? Arg
-  : never;
-type ExtractContext<H extends Hook<any, any>> = H extends Hook<any, infer Cxt>
-  ? Cxt
-  : never;
+type Hooks = Record<string, AnyHook>;
+
+type ExtractArguments<H extends AnyHook> = Parameters<H>[0];
+type ExtractContext<H extends AnyHook> = Parameters<H>[1];
 
 /**
  * create hooks instance
  */
 export function createHooks<T extends Hooks>() {
-  let hooks: { [K in keyof T]?: T[K][] } = {};
+  const hooks: { [K in keyof T]?: T[K][] } = {};
 
   type K = keyof T;
 
@@ -58,8 +62,7 @@ export function createHooks<T extends Hooks>() {
     if (!registeredHooks) return result;
 
     if (!asRef && args) result = deepClone(args);
-    for (let i = 0; i < registeredHooks.length; i++) {
-      const hook = registeredHooks[i];
+    for (const hook of registeredHooks) {
       const res = await hook(result, context);
       if (res) result = res;
     }
@@ -75,7 +78,7 @@ export function createHooks<T extends Hooks>() {
    */
   function wrap<
     Key extends K,
-    Fn extends (...args: ExtractArguments<T[Key]>) => any,
+    Fn extends (...args: ExtractArguments<T[Key]>) => unknown,
   >(name: Key, fn: Fn, { asRef }: { asRef?: boolean } = {}) {
     /**
      * create a wrapped function with the given context
@@ -88,7 +91,7 @@ export function createHooks<T extends Hooks>() {
           context,
         };
         const result = await call(name, callParameters, { asRef });
-        return fn(...result);
+        return fn(...result) as Promise<ReturnType<Fn>>;
       };
   }
 
@@ -96,16 +99,14 @@ export function createHooks<T extends Hooks>() {
     if (!hooks[name]) hooks[name] = [];
     hooks[name]?.push(hook);
 
-    return () => unregister(name, hook);
+    return () => {
+      unregister(name, hook);
+    };
   }
 
   function unregister(name: K, hook?: T[K]) {
     if (!hooks[name]) return;
-    if (hook) {
-      hooks[name] = hooks[name]?.filter((h) => h !== hook);
-    } else {
-      hooks[name] = undefined;
-    }
+    hooks[name] = hook ? hooks[name]?.filter((h) => h !== hook) : undefined;
   }
 
   /**
@@ -114,14 +115,16 @@ export function createHooks<T extends Hooks>() {
    * @param hooks an object with hooks where the key is the hook name and the value is the hook
    */
   function registerMany(hooks: Partial<T>) {
-    Object.entries(hooks).forEach(([hookName, hook]) => {
+    Object.entries(hooks).forEach(([hookName, hook]: [keyof T, T[keyof T]]) => {
       register(hookName, hook);
     });
 
     return () => {
-      Object.entries(hooks).forEach(([hookName, hook]) => {
-        unregister(hookName, hook);
-      });
+      Object.entries(hooks).forEach(
+        ([hookName, hook]: [keyof T, T[keyof T]]) => {
+          unregister(hookName, hook);
+        },
+      );
     };
   }
 
@@ -140,5 +143,5 @@ export function createHooks<T extends Hooks>() {
  */
 function deepClone<T>(source: T): T {
   if (!source || typeof source !== 'object') return source;
-  return JSON.parse(JSON.stringify(source));
+  return JSON.parse(JSON.stringify(source)) as T;
 }

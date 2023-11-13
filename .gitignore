@@ -1,5 +1,6 @@
 # vscode files
-.vscode
+.vscode/*
+!.vscode/settings.json
 
 # Dependency directories
 node_modules/

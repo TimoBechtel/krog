@@ -1,7 +1,7 @@
 import { expect, it, test } from 'bun:test';
-import { Hook, createHooks } from '.';
+import { type Hook, createHooks } from '.';
 
-test('allows registering hooks', (done) => {
+test('allows registering hooks', async (done) => {
   const hooks = createHooks<{
     'my-hook': Hook<string, { id: string }>;
   }>();
@@ -15,10 +15,10 @@ test('allows registering hooks', (done) => {
     done();
   });
 
-  hooks.call('my-hook', { args: testArgs, context: testContext });
+  await hooks.call('my-hook', { args: testArgs, context: testContext });
 });
 
-test('allow registering multiple hooks at once', () => {
+test('allow registering multiple hooks at once', async () => {
   const hooks = createHooks<{
     'my-hook': Hook<string, { id: string }>;
     'my-hook-2': Hook<string, { id: string }>;
@@ -38,12 +38,12 @@ test('allow registering multiple hooks at once', () => {
     },
   });
 
-  hooks.call('my-hook', { args: testArgs, context: testContext });
+  await hooks.call('my-hook', { args: testArgs, context: testContext });
 });
 
 test('allows manipulating arguments', async () => {
   const hooks = createHooks<{
-    'my-hook': Hook<string, void>;
+    'my-hook': Hook<string>;
   }>();
 
   const testArgsInput = 'my-args';
@@ -98,13 +98,13 @@ test('allow cancelling hook with error message', (done) => {
   }, 10);
 });
 
-test('allow asynchronous functions as middleware', (done) => {
+test('allow asynchronous functions as middleware', async (done) => {
   type Hooks = {
-    'test:hook': Hook<{ data: any }>;
+    'test:hook': Hook<{ data: unknown }>;
   };
   const hooks = createHooks<Hooks>();
 
-  hooks.register('test:hook', async (data) => {
+  hooks.register('test:hook', (data) => {
     expect(data).toEqual(undefined);
     return {
       data: 'hello world',
@@ -114,12 +114,12 @@ test('allow asynchronous functions as middleware', (done) => {
     expect(data).toEqual({ data: 'hello world' });
     done();
   });
-  hooks.call('test:hook');
+  await hooks.call('test:hook');
 });
 
 it('should unregister a specific hook', async () => {
   const hooks = createHooks<{
-    'test:hook': Hook<number, void>;
+    'test:hook': Hook<number>;
   }>();
 
   hooks.register('test:hook', (value) => {
@@ -140,7 +140,7 @@ it('should unregister a specific hook', async () => {
 
 it('should unregister all hooks for a given name', async () => {
   const hooks = createHooks<{
-    'test:hook': Hook<number, void>;
+    'test:hook': Hook<number>;
   }>();
 
   hooks.register('test:hook', (value) => {
