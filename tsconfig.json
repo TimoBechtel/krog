@@ -1,4 +1,5 @@
 {
+  "extends": "@timobechtel/style/tsconfig/core",
   "compilerOptions": {
     "types": ["bun-types"],
     "lib": ["esnext"],
@@ -9,9 +10,7 @@
     "allowImportingTsExtensions": true,
     "moduleDetection": "force",
     "outDir": "dist",
-    "rootDir": "src",
-    "strictNullChecks": true,
-    "noImplicitAny": true
+    "rootDir": "src"
   },
   "include": ["src"],
   "exclude": ["node_modules"]
