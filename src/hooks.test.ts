@@ -88,8 +88,12 @@ test('allow cancelling hook with error message', (done) => {
     .then(() => {
       hookTriggered = true;
     })
-    .catch(({ message }) => {
-      expect(message).toEqual('hook failed');
+    .catch((error: unknown) => {
+      if (error instanceof Error) {
+        expect(error.message).toEqual('hook failed');
+        return;
+      }
+      throw new Error('Unexpected error type');
     });
 
   setTimeout(() => {
