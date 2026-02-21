@@ -49,8 +49,8 @@ export function createHooks<T extends Hooks>() {
   async function call<Key extends K>(
     name: Key,
     {
-      args = undefined,
-      context = undefined,
+      args,
+      context,
     }: {
       args?: ExtractArguments<T[Key]>;
       context?: ExtractContext<T[Key]>;
@@ -96,8 +96,8 @@ export function createHooks<T extends Hooks>() {
   }
 
   function register(name: K, hook: T[K]) {
-    if (!hooks[name]) hooks[name] = [];
-    hooks[name]?.push(hook);
+    const hooksForName = hooks[name] ?? (hooks[name] = []);
+    hooksForName.push(hook);
 
     return () => {
       unregister(name, hook);
@@ -105,8 +105,9 @@ export function createHooks<T extends Hooks>() {
   }
 
   function unregister(name: K, hook?: T[K]) {
-    if (!hooks[name]) return;
-    hooks[name] = hook ? hooks[name]?.filter((h) => h !== hook) : undefined;
+    const hooksForName = hooks[name];
+    if (!hooksForName) return;
+    hooks[name] = hook ? hooksForName.filter((h) => h !== hook) : undefined;
   }
 
   /**
